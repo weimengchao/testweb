@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- 启动 AspectJ 支持 -->
+	<!--<aop:aspectj-autoproxy proxy-target-class="true" />-->
+	<aop:aspectj-autoproxy/>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${test_url}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+		<property name="defaultAutoCommit" value="${autocommit}" />
+		<!-- 连接池最大数量 -->
+		<property name="maxActive" value="${maxActive}" />
+		<!-- 连接池最大空闲数量 -->
+		<property name="maxIdle" value="${maxIdle}" />
+		<!--最小空闲连接数,如果不设置,默认为0 -->
+		<property name="minIdle" value="${minIdle}" />
+		<!-- 连接池最大等待时间 -->
+		<property name="maxWait" value="${maxWait}" />
+		<!--初始化连接数,如果不设置,当容器启动后,会随着连接的数量逐个增加-->
+		<property name="initialSize" value="${initialSize}" />
+
+		<!--连接泄漏回收参数,是否自动回收超时连接-->
+		<property name="removeAbandoned" value="true" />
+
+		<!--连接泄漏回收参数,泄露的连接可以被删除的超时值,超时时间(以秒数为单位) -->
+		<property name="removeAbandonedTimeout" value="180" />
+
+		<!-- 验证使用的SQL语句-->
+		<property name="validationQuery" value="SELECT 1" />
+
+		<!-- 指明连接是否被空闲连接回收器(如果有)进行检验,如果检测失败,则连接将被从池中去除 -->
+		<property name="testWhileIdle" value="true" />
+
+		<!--借出连接时不要测试,否则很影响性能 -->
+		<property name="testOnBorrow" value="false"/>
+
+		<!--每30秒运行一次空闲连接回收器 -->
+		<property name="timeBetweenEvictionRunsMillis" value="30000" />
+
+		<!--在每次空闲连接回收器线程(如果有)运行时检查的连接数量 -->
+		<property name="numTestsPerEvictionRun" value="10"/>
+
+		<!--池中的连接空闲7 * 60分钟后被回收 -->
+		<property name="minEvictableIdleTimeMillis" value="25200000" />
+
+		<!--被丢弃的数据库连接是否做记录,以便跟踪 -->
+		<property name="logAbandoned" value="true" />
+	</bean>
+
+	<bean id="sqlSessionFactory" name="commonSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.sxc.testweb.domain" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:com/sxc/testweb/mapper/*Mapper.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- scan for dao and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.sxc.testweb.dao" />
+        <property name="sqlSessionFactoryBeanName" value="commonSqlSessionFactory"/>
+	</bean>
+
+	<!-- 可通过注解控制事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
+    <!-- 配置事务的传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+        	<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="create*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
+            <tx:method name="change*" propagation="REQUIRED" rollback-for="Exception" />
+        </tx:attributes>
+    </tx:advice>
+    <!-- 配置事务的切入点 -->
+    <aop:config>
+        <aop:pointcut id="targetMethod" expression="execution(* com.sxc.testweb.*.impl.*Impl.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="targetMethod" />
+    </aop:config>
+     
+</beans>
