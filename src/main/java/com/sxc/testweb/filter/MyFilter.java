@@ -1,5 +1,7 @@
 package com.sxc.testweb.filter;
 
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,7 @@ import java.util.logging.Logger;
 @WebFilter(filterName = "myFilter", urlPatterns = "/*")
 public class MyFilter implements Filter{
 
-//    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MyFilter.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MyFilter.class);
 
     private FilterConfig config;
 
@@ -35,14 +37,12 @@ public class MyFilter implements Filter{
         ServletContext context = config.getServletContext();
         // 预处理
         long before = System.currentTimeMillis();
-//        logger.error("过滤开始");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         System.out.println("MyFilter已经截获用户的请求，地址：" + request.getServletPath());
         // 放行，依然请求目标地址
         filterChain.doFilter(servletRequest, servletResponse);
         // 后处理
         long after = System.currentTimeMillis();
-        System.out.println("过滤结束");
         System.out.println("请求被定位到" + request.getRequestURI()
                 + "所花时间为" + (after - before));
 

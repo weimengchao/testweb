@@ -21,6 +21,7 @@ import java.sql.DriverManager;
  * —————————————————————————————————
  * 2016/5/31       weimengchao    1.0       1.0 Version
  */
+@WebListener
 public class MysqlConnListener implements ServletContextListener{
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {

@@ -23,6 +23,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:conf/jdbc.properties</value>
+				<value>classpath:conf/config.properties</value>
 			</list>
 		</property>
 	</bean>

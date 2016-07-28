@@ -5,7 +5,7 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
 
-  <!--
+  <!-- MysqlConnListener -->
   <context-param>
     <param-name>driver</param-name>
     <param-value>com.mysql.jdbc.Driver</param-value>
@@ -22,9 +22,8 @@
     <param-name>pwd</param-name>
     <param-value>1234</param-value>
   </context-param>
-  -->
 
-  <!-- SpringSecurity必须的filter -->
+  <!-- SpringSecurity -->
   <!--
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
