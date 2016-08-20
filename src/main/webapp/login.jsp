@@ -1,13 +1,20 @@
-<form action="/login" method="post">
+my login page
 
-    <p>
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" />
-    </p>
-    <p>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" />
-    </p>
-
-    <button type="submit" class="btn">Log in</button>
+<form action="login" method="post">
+    <table>
+        <tr>
+            <td> username:</td>
+            <td><input type="text" name="username"/></td>
+        </tr>
+        <tr>
+            <td> password:</td>
+            <td><input type="password" name="password"/></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value=" submit "/>
+                <input type="reset" value=" reset "/>
+            </td>
+        </tr>
+    </table>
 </form>

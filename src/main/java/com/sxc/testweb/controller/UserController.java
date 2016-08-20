@@ -36,9 +36,9 @@ public class UserController {
         String password = request.getParameter("password");
         boolean rs = userService.login(username, password);
         if (rs) {
-            mv.setViewName("success");
+            mv.setViewName("../index.jsp");
         } else {
-            mv.setViewName("fail");
+            mv.setViewName("error.jsp");
         }
 
         return mv;

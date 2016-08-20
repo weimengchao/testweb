@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
 			http://www.springframework.org/schema/security 
 			http://www.springframework.org/schema/security/spring-security-4.1.xsd">
 
-	<!-- Spring-Security 配置 -->
-	<security:http use-expressions="false">
-		<!-- 登录页面不需要控制权限 -->
-		<security:intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-		<!-- 访问其他所有页面都需要有USER权限 -->
-		<security:intercept-url pattern="/**" access="ROLE_USER" />
-		<!-- 登录页面 -->
-		<security:form-login login-page='/login.jsp' />
-		<!-- 登出功能 -->
-		<security:logout />
+    <!-- Spring-Security 配置 -->
+    <security:http auto-config="true" use-expressions="false">
+        <!-- 表示匿名用户可以访问 -->
+        <security:intercept-url pattern="/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/jsp/error.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/**" access="ROLE_USER"/>
 
-	</security:http>
+        <security:form-login login-page="/login.jsp"
+                             login-processing-url="/login" username-parameter="username"
+                             password-parameter="password"
+                             always-use-default-target="true"
+                             default-target-url="/index.jsp"
+                             authentication-failure-url="/jsp/error.jsp"/>
 
-	<!-- 指定authentication-manager -->
-	<security:authentication-manager>
-		<security:authentication-provider>
-			<security:user-service>
-				<security:user name="jimi" password="jimi123" authorities="ROLE_USER,ROLE_ADMIN" />
-				<security:user name="bob" password="bob123" authorities="ROLE_USER" />
-			</security:user-service>
-		</security:authentication-provider>
-	</security:authentication-manager>
+        <security:csrf disabled="true"/>
+    </security:http>
+
+    <!-- 指定authentication-manager -->
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="user" password="user" authorities="ROLE_USER"/>
+                <security:user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
 </beans>

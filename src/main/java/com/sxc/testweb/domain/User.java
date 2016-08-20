@@ -1,6 +1,11 @@
 package com.sxc.testweb.domain;
 
-public class User {
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+
+public class User implements UserDetails {
     private Integer id;
 
     private String username;
@@ -8,6 +13,12 @@ public class User {
     private String password;
 
     private Integer age;
+
+    Collection<GrantedAuthority> authorities;
+
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
 
     public Integer getId() {
         return id;
@@ -21,8 +32,28 @@ public class User {
         return username;
     }
 
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    public boolean isEnabled() {
+        return false;
+    }
+
     public void setUsername(String username) {
         this.username = username == null ? null : username.trim();
+    }
+
+    public Collection<GrantedAuthority> getAuthorities() {
+        return this.authorities;
     }
 
     public String getPassword() {

@@ -23,18 +23,6 @@
     <param-value>1234</param-value>
   </context-param>
 
-  <!-- SpringSecurity -->
-  <!--
-  <filter>
-    <filter-name>springSecurityFilterChain</filter-name>
-    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>springSecurityFilterChain</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  -->
-
   <!-- 指定监听器加载的spring xml配置文件 -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -43,6 +31,16 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+
+  <!-- SpringSecurity -->
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
   <!-- 指定监听器加载的log4j配置文件 -->
   <context-param>
