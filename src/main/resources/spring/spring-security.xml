@@ -26,14 +26,28 @@
 
     <!-- 指定authentication-manager -->
     <security:authentication-manager alias="authenticationManager">
-        <security:authentication-provider user-service-ref="userDetailsService">
+        <security:authentication-provider ref="authenticationProvider">
 
         </security:authentication-provider>
     </security:authentication-manager>
+
+    <bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService" />
+        <property name="messageSource" ref="messageSource" />
+    </bean>
 
     <bean id="userDetailsService"
           class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
         <property name="dataSource" ref="dataSource" />
     </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <property name="basenames">
+        <array>
+            <value>classpath:conf/local-messages</value>
+            <value>classpath:org/springframework/security/messages</value>
+        </array>
+    </property>
+</bean>
 
 </beans>
