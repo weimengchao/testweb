@@ -12,6 +12,7 @@
         <!-- 表示匿名用户可以访问 -->
         <security:intercept-url pattern="/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/jsp/error.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <security:intercept-url pattern="/session_timeout.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/**" access="ROLE_USER"/>
 
         <security:form-login login-page="/login.jsp"
@@ -21,10 +22,14 @@
                              default-target-url="/index.jsp"
                              authentication-failure-url="/jsp/error.jsp"/>
 
-        <security:logout invalidate-session="true"
+        <security:logout invalidate-session="true" delete-cookies="JSESSIONID"
                          logout-success-url="/login.jsp" logout-url="/logout.do" />
 
         <security:csrf disabled="true"/>
+
+        <security:session-management invalid-session-url="/session_timeout.jsp">
+            <security:concurrency-control max-sessions="1" expired-url="/session_timeout.jsp"/>
+        </security:session-management>
     </security:http>
 
     <!-- 指定authentication-manager -->
