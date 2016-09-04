@@ -21,6 +21,9 @@
                              default-target-url="/index.jsp"
                              authentication-failure-url="/jsp/error.jsp"/>
 
+        <security:logout invalidate-session="true"
+                         logout-success-url="/login.jsp" logout-url="/logout.do" />
+
         <security:csrf disabled="true"/>
     </security:http>
 
