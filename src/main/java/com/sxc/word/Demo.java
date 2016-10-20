@@ -120,11 +120,11 @@ public class Demo {
         double t1pk4 = textSimilarity.similarScore(t1, t4);
         double t2pk4 = textSimilarity.similarScore(t2, t4);
         double t3pk4 = textSimilarity.similarScore(t3, t4);
-        System.out.println(t1+" 和 "+t2+" 的相似度分值："+t1pk2);
-        System.out.println(t1+" 和 "+t3+" 的相似度分值："+t1pk3);
-        System.out.println(t2+" 和 "+t3+" 的相似度分值："+t2pk3);
-        System.out.println(t1+" 和 "+t4+" 的相似度分值："+t1pk4);
-        System.out.println(t2+" 和 "+t4+" 的相似度分值："+t2pk4);
-        System.out.println(t3+" 和 "+t4+" 的相似度分值："+t3pk4);
+        System.out.println("t1 和 t2"+" 的相似度分值："+t1pk2);
+        System.out.println("t1 和 t3"+" 的相似度分值："+t1pk3);
+        System.out.println("t2 和 t2"+" 的相似度分值："+t2pk3);
+        System.out.println("t1 和 t4"+" 的相似度分值："+t1pk4);
+        System.out.println("t2 和 t4"+" 的相似度分值："+t2pk4);
+        System.out.println("t3 和 t4"+" 的相似度分值："+t3pk4);
     }
 }
